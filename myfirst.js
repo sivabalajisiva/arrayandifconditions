@@ -1,4 +1,21 @@
+1,quantity and price sa multiple panni total amount ah sollum
+// [ { "_id": 1, "product": "A", "quantity": 10, "price": 5 },
+//   { "_id": 2, "product": "B", "quantity": 5, "price": 20 },
+//   { "_id": 3, "product": "C", "quantity": 8, "price": 15 }]
 
+db.orders.aggregate([
+  {
+    $project: {
+      product: 1,
+      total: { $multiply: ["$quantity", "$price"] } // Calculate total for each order
+    }
+  }
+])
+
+// [ { "_id": 1, "product": "A", "total": 50 },
+//   { "_id": 2, "product": "B", "total": 100 },
+//   { "_id": 3, "product": "C", "total": 120 } ]
+-------------------------------------------------
 
 
 

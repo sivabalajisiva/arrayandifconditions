@@ -43,8 +43,27 @@ db.products.aggregate([
 //   { "_id": 3, "name": "Headphones", "price": 100 },
 //   { "_id": 5, "name": "Keyboard", "price": 60 }]
 ----------------------------------------------------
-
-
+4: How do you calculate the total sales and average sales in the same pipeline?
+  // [{ "_id": 1, "product": "Laptop", "amount": 1200 },
+  // { "_id": 2, "product": "Smartphone", "amount": 800 },
+  // { "_id": 3, "product": "Headphones", "amount": 100 },
+  // { "_id": 4, "product": "Mouse", "amount": 50 },
+  // { "_id": 5, "product": "Keyboard", "amount": 150 }]
+db.sales.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSales: { $sum: "$amount" },
+      avgSales: { $avg: "$amount" }
+    }
+  }
+])
+// [{
+//     "_id": null,
+//     "totalSales": 2300,        // 1200 + 800 + 100 + 50 + 150
+//     "avgSales": 460            // (2300 / 5)
+// }]
+----------------------------------------------------
 
 
 

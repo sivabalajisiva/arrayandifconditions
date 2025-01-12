@@ -16,14 +16,33 @@ db.orders.aggregate([
 //   { "_id": 2, "product": "B", "total": 100 },
 //   { "_id": 3, "product": "C", "total": 120 } ]
 -------------------------------------------------
-
-
-
-
-
-
-
-
+2, how many category user select?
+  
+ db.orders.aggregate([
+    {  $match: { Categoryis: "abc"  } },
+    {  $count: "value" }
+])
+  
+// value 3
+--------------------------------------------------
+3, price list la 50 ku mela erukura price only show akum
+  // [ { "_id": 1, "name": "Laptop", "price": 1200 },
+  // { "_id": 2, "name": "Smartphone", "price": 800 },
+  // { "_id": 3, "name": "Headphones", "price": 100 },
+  // { "_id": 4, "name": "Mouse", "price": 25 },
+  // { "_id": 5, "name": "Keyboard", "price": 60 },
+  // { "_id": 6, "name": "Monitor", "price": 200 },
+  // { "_id": 7, "name": "Charger", "price": 50 }]
+db.products.aggregate([
+  { $match: { price: { $gt: 50 } } }, // Filter products with price > 50
+  { $sort: { price: -1 } }           // Sort by price descending
+])
+// [{ "_id": 1, "name": "Laptop", "price": 1200 },
+//   { "_id": 2, "name": "Smartphone", "price": 800 },
+//   { "_id": 6, "name": "Monitor", "price": 200 },
+//   { "_id": 3, "name": "Headphones", "price": 100 },
+//   { "_id": 5, "name": "Keyboard", "price": 60 }]
+----------------------------------------------------
 
 
 

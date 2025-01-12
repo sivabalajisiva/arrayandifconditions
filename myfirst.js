@@ -108,7 +108,45 @@ db.users.aggregate([
 //   { "_id": 20, "count": 2, "users": ["Mary", "Alex"] },
 //   { "_id": 40, "count": 2, "users": ["Kate", "Emma"] }]
 ------------------------------------------------------
+7,
+  // [ { "name": "Phone", "category": "Electronics", "price": 800 },
+  // { "name": "Laptop", "category": "Electronics", "price": 1200 },
+  // { "name": "Shirt", "category": "Fashion", "price": 50 },
+  // { "name": "Shoes", "category": "Fashion", "price": 100 },
+  // { "name": "Book", "category": "Education", "price": 20 }]
+db.products.aggregate([
+  {
+    $facet: {
+      priceStats: [
+        { $group: { _id: null, maxPrice: { $max: "$price" }, minPrice: { $min: "$price" }, avgPrice: { $avg: "$price" } } }
+      ],
+      categoryCounts: [
+        { $group: { _id: "$category", count: { $sum: 1 } } }
+      ],
+      highPriceItems: [
+        { $match: { price: { $gte: 100 } } },
+        { $project: { name: 1, price: 1, _id: 0 } }
+      ]
+    }
+  }
+])
 
+// {
+//   "priceStats": [
+//     { "maxPrice": 1200, "minPrice": 20, "avgPrice": 434 }
+//   ],
+//   "categoryCounts": [
+//     { "_id": "Electronics", "count": 2 },
+//     { "_id": "Fashion", "count": 2 },
+//     { "_id": "Education", "count": 1 }
+//   ],
+//   "highPriceItems": [
+//     { "name": "Phone", "price": 800 },
+//     { "name": "Laptop", "price": 1200 },
+//     { "name": "Shoes", "price": 100 }
+//   ]
+// }
+------------------------------------------------------
 
 
 

@@ -64,7 +64,7 @@ db.sales.aggregate([
 //     "avgSales": 460            // (2300 / 5)
 // }]
 ----------------------------------------------------
-5,
+5,$addFields
 // [{  _id: 1, student: "Maya",  homework: [ 10, 5, 10 ], quiz: [ 10, 8 ], extraCredit: 0 },
 //    {  _id: 2, student: "Ryan", homework: [ 5, 6, 5 ],  quiz: [ 8, 8 ],  extraCredit: 8 }]
 db.scores.aggregate([
@@ -84,8 +84,30 @@ db.scores.aggregate([
 //   {_id: 2, student: "Ryan", homework: [ 5, 6, 5 ],quiz: [ 8, 8 ],  extraCredit: 8,
 //   totalHomework: 16, totalQuiz: 16,  totalScore: 40}]
 -----------------------------------------------------
-
-
+6, "$bucket" Age Group Categorization
+// [{ "_id": 1, "name": "John", "age": 15 },
+//   { "_id": 2, "name": "Mary", "age": 25 },
+//   { "_id": 3, "name": "Alex", "age": 35 },
+//   { "_id": 4, "name": "Kate", "age": 45 },
+//   { "_id": 5, "name": "Emma", "age": 55 }]
+db.users.aggregate([
+  {
+    $bucket: {
+      groupBy: "$age",
+      boundaries: [0, 20, 40, 60],
+      default: "Other",
+      output: {
+        count: { $sum: 1 },
+        users: { $push: "$name" }
+      }
+    }
+  }
+])
+  
+// [{ "_id": 0, "count": 1, "users": ["John"] },
+//   { "_id": 20, "count": 2, "users": ["Mary", "Alex"] },
+//   { "_id": 40, "count": 2, "users": ["Kate", "Emma"] }]
+------------------------------------------------------
 
 
 

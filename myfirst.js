@@ -147,7 +147,13 @@ db.products.aggregate([
 //   ]
 // }
 ------------------------------------------------------
-
+8,$project: Shape Output Documents
+// Include only the name and salary fields while renaming salary to income.
+// dp la erukura name namma usecase ku ethamathiri rename pannikalam
+  db.employees.aggregate([
+  { $project: { _id: 0, name: 1, income: "$salary" } }
+])
+------------------------------------------------------
 
 
 

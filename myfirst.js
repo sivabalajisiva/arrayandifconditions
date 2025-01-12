@@ -16,7 +16,7 @@ db.orders.aggregate([
 //   { "_id": 2, "product": "B", "total": 100 },
 //   { "_id": 3, "product": "C", "total": 120 } ]
 -------------------------------------------------
-2, how many category user select?
+2, how many category user select this category?
   
  db.orders.aggregate([
     {  $match: { Categoryis: "abc"  } },

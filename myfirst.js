@@ -154,11 +154,37 @@ db.products.aggregate([
   { $project: { _id: 0, name: 1, income: "$salary" } }
 ])
 ------------------------------------------------------
+9,$sortByCount
+// The $sortByCount stage in MongoDB's aggregation framework is a convenient way to group documents
+// by a specific field or expression, count the number of documents in each group, and sort the groups
+// in descending order by their count. It combines the functionality of $group and $sort into a single stage.
 
-
-
-
-
+// [{ "name": "Phone", "category": "Electronics" },
+//   { "name": "Laptop", "category": "Electronics" },
+//   { "name": "Shirt", "category": "Fashion" },
+//   { "name": "Shoes", "category": "Fashion" },
+//   { "name": "Book", "category": "Education" }]
+db.products.aggregate([
+  { $sortByCount: "$category" }
+])
+// [ { "_id": "Electronics", "count": 2 },
+//   { "_id": "Fashion", "count": 2 },
+//   { "_id": "Education", "count": 1 } ]
+---------------------------------------------------------
+10,$sample
+// sample pipeline is used to randomly select collection data
+// [ { "name": "Phone", "price": 800 },
+//   { "name": "Laptop", "price": 1200 },
+//   { "name": "Tablet", "price": 400 },
+//   { "name": "Monitor", "price": 300 },
+//   { "name": "Keyboard", "price": 100 }]
+db.products.aggregate([
+  { $sample: { size: 2 } }
+])
+  
+// [{ "name": "Tablet", "price": 400 },
+//   { "name": "Laptop", "price": 1200 }]
+--------------------------------------------------------
 
 
 

@@ -108,7 +108,7 @@ db.users.aggregate([
 //   { "_id": 20, "count": 2, "users": ["Mary", "Alex"] },
 //   { "_id": 40, "count": 2, "users": ["Kate", "Emma"] }]
 ------------------------------------------------------
-7,
+7,$facet
   // [ { "name": "Phone", "category": "Electronics", "price": 800 },
   // { "name": "Laptop", "category": "Electronics", "price": 1200 },
   // { "name": "Shirt", "category": "Fashion", "price": 50 },

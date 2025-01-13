@@ -185,7 +185,23 @@ db.products.aggregate([
 // [{ "name": "Tablet", "price": 400 },
 //   { "name": "Laptop", "price": 1200 }]
 --------------------------------------------------------
+11,$year
+// [{ "_id": 1, "orderDate": ISODate("2023-12-01T10:00:00Z") },
+//   { "_id": 2, "orderDate": ISODate("2024-01-15T12:30:00Z") },
+//   { "_id": 3, "orderDate": ISODate("2023-07-20T08:15:00Z") }]
+db.orders.aggregate([
+  {
+    $project: {
+      _id: 1,
+      orderYear: { $year: "$orderDate" }
+    }
+  }
+])
 
+// [{ "_id": 1, "orderYear": 2023 },
+//   { "_id": 2, "orderYear": 2024 },
+//   { "_id": 3, "orderYear": 2023 }]
+---------------------------------------------------------
 
 
 

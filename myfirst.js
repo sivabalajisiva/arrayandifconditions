@@ -202,7 +202,24 @@ db.orders.aggregate([
 //   { "_id": 2, "orderYear": 2024 },
 //   { "_id": 3, "orderYear": 2023 }]
 ---------------------------------------------------------
+12,$expr and $eq
+  in MongoDB The $expr operator allows you to use aggregation expressions within a $match stage.
+  This enables field comparisons, calculations, and complex queries directly within the query language.
 
+  The $eq operator checks if two values are equal. It returns true if they are equal, 
+  and false otherwise. When combined with $expr, it becomes a powerful tool for comparing fields,
+  expressions, or constants.
+  
+// [ { "_id": 1, "name": "Phone", "price": 500, "discountedPrice": 500 },
+//   { "_id": 2, "name": "Laptop", "price": 1200, "discountedPrice": 1000 },
+//   { "_id": 3, "name": "Tablet", "price": 300, "discountedPrice": 300 }]
+db.products.find({
+  $expr: { $eq: ["$price", "$discountedPrice"] }
+})
+  
+  // [{ "_id": 1, "name": "Phone", "price": 500, "discountedPrice": 500 },
+  // { "_id": 3, "name": "Tablet", "price": 300, "discountedPrice": 300 }]
+---------------------------------------------------------
 
 
 

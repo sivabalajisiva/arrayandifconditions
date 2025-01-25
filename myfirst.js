@@ -66,9 +66,81 @@ db.users.aggregate([
 ]);
 // [ { "usersAbove25": 3 }]
 ----------------------------------------------------
-
-
-
+3,$GROUP
+// [
+//   { "_id": 1, "name": "Alice", "age": 28, "status": "active" },
+//   { "_id": 2, "name": "Bob", "age": 34, "status": "inactive" },
+//   { "_id": 3, "name": "Charlie", "age": 22, "status": "active" },
+//   { "_id": 4, "name": "David", "age": 30, "status": "inactive" },
+//   { "_id": 5, "name": "Eve", "age": 25, "status": "active" }
+// ]
+!,Count the number of documents grouped by status:
+  db.users.aggregate([
+  {
+    $group: {
+      _id: "$status",  // Group by the "status" field
+      count: { $sum: 1 }  // Count the number of documents in each group
+    }
+  }
+]);
+// [ { "_id": "active", "count": 3 },
+//   { "_id": "inactive", "count": 2 }]
+!!,Calculate the total age for each status:
+db.users.aggregate([
+  {
+    $group: {
+      _id: "$status",  // Group by "status"
+      totalAge: { $sum: "$age" }  // Sum the "age" field
+    }
+  }
+]);
+// [ { "_id": "active", "totalAge": 75 },
+//   { "_id": "inactive", "totalAge": 64 }]
+!!!, Find Minimum and Maximum Values ,Find the youngest and oldest user for each status:
+db.users.aggregate([
+  {
+    $group: {
+      _id: "$status",  // Group by "status"
+      youngest: { $min: "$age" },  // Minimum age
+      oldest: { $max: "$age" }  // Maximum age
+    }
+  }
+]);
+// [ { "_id": "active", "youngest": 22, "oldest": 28 },
+//   { "_id": "inactive", "youngest": 30, "oldest": 34 }]
+!V, Create an Array of Field Values , Create an array of names for each status:
+  db.users.aggregate([
+  {
+    $group: {
+      _id: "$status",  // Group by "status"
+      names: { $push: "$name" }  // Collect all "name" values into an array
+    }
+  }
+]);
+// [ { "_id": "active", "names": ["Alice", "Charlie", "Eve"] },
+//   { "_id": "inactive", "names": ["Bob", "David"] }]
+V. Get Unique Values,Create an array of unique ages for each status:
+db.users.aggregate([
+  {
+    $group: {
+      _id: "$status",  // Group by "status"
+      uniqueAges: { $addToSet: "$age" }  // Collect unique "age" values
+    }
+  }
+]);
+// [ { "_id": "active", "uniqueAges": [28, 22, 25] },
+//   { "_id": "inactive", "uniqueAges": [34, 30] }]
+V!,
+  db.users.aggregate([
+  { $match: { status: "active" } }, // Filter active users
+  { $group: { 
+      _id: "$status", 
+      avgAge: { $avg: "$age" },
+      users: { $push: "$name" }
+  } }
+]);
+// [{ "_id": "active", "avgAge": 25, "users": ["Alice", "Charlie", "Eve"] }]
+----------------------------------------------
 
 
 

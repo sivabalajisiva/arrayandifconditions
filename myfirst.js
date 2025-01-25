@@ -141,7 +141,74 @@ V!,
 ]);
 // [{ "_id": "active", "avgAge": 25, "users": ["Alice", "Charlie", "Eve"] }]
 ----------------------------------------------
+4,$SUM
+// [
+//   { "_id": 1, "product": "Laptop", "quantity": 2, "price": 1000, "category": "Electronics" },
+//   { "_id": 2, "product": "Phone", "quantity": 5, "price": 500, "category": "Electronics" },
+//   { "_id": 3, "product": "Tablet", "quantity": 3, "price": 300, "category": "Electronics" },
+//   { "_id": 4, "product": "Chair", "quantity": 4, "price": 150, "category": "Furniture" },
+//   { "_id": 5, "product": "Desk", "quantity": 1, "price": 200, "category": "Furniture" }
+// ]
+!,Total Quantity of All Products, To calculate the total quantity of all products:
+db.sales.aggregate([
+  {
+    $group: {
+      _id: null,  // Combine all documents into one group
+      totalQuantity: { $sum: "$quantity" }  // Sum the "quantity" field
+    }
+  }
+]);
+// [{ "totalQuantity": 15 }]
+!!,Total Sales Revenue for Each Category, To calculate the total revenue (quantity * price) for each category
+db.sales.aggregate([
+  {
+    $group: {
+      _id: "$category",  // Group by "category"
+      totalRevenue: { $sum: { $multiply: ["$quantity", "$price"] } }  // Multiply and sum
+    }
+  }
+]);
+// [ { "_id": "Electronics", "totalRevenue": 4600 },
+//   { "_id": "Furniture", "totalRevenue": 800 }]
+!!!, Count the Number of Products in Each Category,To count the total number of products in each category
+db.sales.aggregate([
+  {
+    $group: {
+      _id: "$category",  // Group by "category"
+      productCount: { $sum: 1 }  // Sum 1 for each document in the group
+    }
+  }
+]);
+// [ { "_id": "Electronics", "productCount": 3 },
+//   { "_id": "Furniture", "productCount": 2 }]
+!V,Total Revenue Across All Products,To calculate the total revenue for all products:
+db.sales.aggregate([
+  {
+    $group: {
+      _id: null,  // Combine all documents into one group
+      totalRevenue: { $sum: { $multiply: ["$quantity", "$price"] } }  // Multiply and sum
+    }
+  }
+]);
+// [ { "totalRevenue": 5400 }]
+V,Total Quantity Sold for Electronics Only,To calculate the total quantity sold for category: "Electronics":
+db.sales.aggregate([
+  {
+    $match: { category: "Electronics" }  // Filter for Electronics category
+  },
+  {
+    $group: {
+      _id: "$category",  // Group by category
+      totalQuantity: { $sum: "$quantity" }  // Sum the "quantity" field
+    }
+  }
+])
+// [ { "_id": "Electronics", "totalQuantity": 10 }]
+------------------------------------------------------
 
+
+
+  
 
 
   

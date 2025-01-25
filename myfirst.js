@@ -1,3 +1,26 @@
+Why Use Curly Braces in MongoDB Pipelines?
+
+1,Curly braces {} define key-value pairs.
+Each stage in an aggregation pipeline is an object.
+  
+2,Pipeline Stages are Objects
+Each stage in the pipeline starts with a stage operator (like $match, $group, $project), followed by its options inside curly braces.
+
+db.collection.aggregate([
+  { $match: { status: "active" } },  // Stage 1: Filter documents (outer {} for stage, inner {} for filter)
+  { 
+    $group: {                        // Stage 2: Group documents
+      _id: "$category",              // Grouping key
+      total: { $sum: "$quantity" }   // Accumulator expression
+    } 
+  },
+  { $sort: { total: -1 } }           // Stage 3: Sort results (outer {} for stage, inner {} for sorting options)
+]);
+
+ { $match: { status: "active" } }   // Outer curly braces define the $match stage.Inner curly braces define the filter condition: { status: "active" }.
+
+  
+  
 1,$MATCH
 The $match stage in MongoDB's aggregation framework is used to filter documents based on specified criteria.
 It works similarly to the find() query but is used within an aggregation pipeline to filter data at specific stages.

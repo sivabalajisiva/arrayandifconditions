@@ -462,50 +462,6 @@ db.products.find({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // graphlookup
 exports.graphlookup = async (req,res) =>{
   try {

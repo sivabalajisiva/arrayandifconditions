@@ -1,4 +1,4 @@
-1,$match 
+1,$MATCH
 The $match stage in MongoDB's aggregation framework is used to filter documents based on specified criteria.
 It works similarly to the find() query but is used within an aggregation pipeline to filter data at specific stages.
 // [{ "_id": 1, "name": "Alice", "age": 28, "status": "active", "city": "New York" },
@@ -40,6 +40,39 @@ It works similarly to the find() query but is used within an aggregation pipelin
 //   { "_id": 4, "name": "David", "age": 30, "status": "inactive", "city": "New York" }]
 
 -------------------------------------------------------------
+2,$COUNT
+// [
+//   { "_id": 1, "name": "Alice", "age": 28, "status": "active" },
+//   { "_id": 2, "name": "Bob", "age": 34, "status": "inactive" },
+//   { "_id": 3, "name": "Charlie", "age": 22, "status": "active" },
+//   { "_id": 4, "name": "David", "age": 30, "status": "inactive" },
+//   { "_id": 5, "name": "Eve", "age": 25, "status": "active" }
+// ]
+!,to count total number of user?
+db.users.aggregate([
+  { $count: "totalUsers" }
+]);
+// [{ "totalUsers": 5 }]
+!!, Count Documents Matching a Condition
+db.users.aggregate([
+  { $match: { status: "active" } },
+  { $count: "activeUsers" }
+]);
+// [ { "activeUsers": 3 }]
+!!!, Count Documents with a Range Condition
+db.users.aggregate([
+  { $match: { age: { $gt: 25 } } },
+  { $count: "usersAbove25" }
+]);
+// [ { "usersAbove25": 3 }]
+----------------------------------------------------
+
+
+
+
+
+
+  
 1,quantity and price sa multiple panni total amount ah sollum
 // [ { "_id": 1, "product": "A", "quantity": 10, "price": 5 },
 //   { "_id": 2, "product": "B", "quantity": 5, "price": 20 },

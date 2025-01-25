@@ -1,3 +1,45 @@
+1,$match 
+The $match stage in MongoDB's aggregation framework is used to filter documents based on specified criteria.
+It works similarly to the find() query but is used within an aggregation pipeline to filter data at specific stages.
+// [{ "_id": 1, "name": "Alice", "age": 28, "status": "active", "city": "New York" },
+//   { "_id": 2, "name": "Bob", "age": 34, "status": "inactive", "city": "Los Angeles" },
+//   { "_id": 3, "name": "Charlie", "age": 22, "status": "active", "city": "Chicago" },
+//   { "_id": 4, "name": "David", "age": 30, "status": "inactive", "city": "New York" },
+//   { "_id": 5, "name": "Eve", "age": 25, "status": "active", "city": "New York" }]
+!,db.users.aggregate([
+  {
+    $match: { status: "active" }
+  }
+])
+// [{ "_id": 1, "name": "Alice", "age": 28, "status": "active", "city": "New York" },
+//   { "_id": 3, "name": "Charlie", "age": 22, "status": "active", "city": "Chicago" },
+//   { "_id": 5, "name": "Eve", "age": 25, "status": "active", "city": "New York" }]
+!!,db.users.aggregate([
+  {
+    $match: { age: { $gt: 25 } }
+  }
+]);
+// [{ "_id": 1, "name": "Alice", "age": 28, "status": "active", "city": "New York" },
+//   { "_id": 2, "name": "Bob", "age": 34, "status": "inactive", "city": "Los Angeles" },
+//   { "_id": 4, "name": "David", "age": 30, "status": "inactive", "city": "New York" }]
+!!!,db.users.aggregate([
+  {
+    $match: { city: "New York", age: { $lte: 30 } }
+  }
+]);
+// [{ "_id": 1, "name": "Alice", "age": 28, "status": "active", "city": "New York" },
+//   { "_id": 5, "name": "Eve", "age": 25, "status": "active", "city": "New York" }]
+!V,db.users.aggregate([   
+  {    rentu la ethathu onnu match ana pothum 
+    $match: {
+      $or: [ { status: "inactive" }, { age: { $gt: 30 } } ]
+    }
+  }
+]);
+// [{ "_id": 2, "name": "Bob", "age": 34, "status": "inactive", "city": "Los Angeles" },
+//   { "_id": 4, "name": "David", "age": 30, "status": "inactive", "city": "New York" }]
+
+-------------------------------------------------------------
 1,quantity and price sa multiple panni total amount ah sollum
 // [ { "_id": 1, "product": "A", "quantity": 10, "price": 5 },
 //   { "_id": 2, "product": "B", "quantity": 5, "price": 20 },
